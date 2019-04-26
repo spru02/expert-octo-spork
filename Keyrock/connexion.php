@@ -1,6 +1,9 @@
 <?php
 // require('cryptage.php');
 session_start();
+$alert_class = "";
+$alert2_class = "";
+$text_alert = "";
 
 if (isset($_POST["username"])){
 $url = 'http://35.204.123.64:3000/oauth2/token';
@@ -21,18 +24,21 @@ $result = file_get_contents($url, true, $context);
 if ($result === FALSE) { /* Handle error */ }
 
 // var_dump($result);
+// var_dump(json_decode($result, true));
 
 $obj = json_decode($result, true);
-
 if (isset ($obj["access_token"])){   
     // $iv = iv();
     // $key = "azerty";
     $_SESSION["username"]= $_POST["username"]; 
-    // $_SESSION["password"]= encrypt($iv,$password,$key);
+    $_SESSION["password"]= encrypt($iv,$password,$key);
     header('location: http://127.0.0.1/Keyrock/session.php');
 
 }else{
-    echo "La réponse ne contient pas access_token !";
+    $alert_class= "uk-form-danger";
+    $alert2_class= "uk-form-danger";
+    $text_alert = "<h2> Email et/ou mot de passe inconnu* </h2>";
+    // echo "La réponse ne contient pas access_token !";
 };
 }else{
     echo "*Remplissez les champs Identifiant et Mot de passe";
@@ -62,16 +68,17 @@ if (isset ($obj["access_token"])){
     <form method="post" action="" enctype="">
         <fieldset class="uk-dark uk-background-muted uk-padding">
                 <div class="uk-margin">
+                <div> <?= $text_alert?> </div>
         <div class="uk-inline">
                 <span class="uk-form-icon" uk-icon="icon: user"></span>
-                <input class="uk-input uk-text-right" name="username" type="text" placeholder="Identifiant">
+                <input class="uk-input uk-text-right <?= $alert_class ?>" name="username" type="text" placeholder="Identifiant">
         </div>
     </div>
 
     <div class="uk-margin">
         <div class="uk-inline">
                 <span class="uk-form-icon uk-form-icon-flip" uk-icon="icon: lock"></span>
-                <input class="uk-input" type="password" grant_type="password" name="password" placeholder="Mot de passe">
+                <input class="uk-input <?= $alert2_class ?>" type="password" grant_type="password" name="password" placeholder="Mot de passe">
         </div>
     </div>
             <p uk-margin>
