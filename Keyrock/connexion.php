@@ -1,9 +1,10 @@
 <?php
-// require('cryptage.php');
+require('cryptage.php');
 session_start();
 $alert_class = "";
 $alert2_class = "";
 $text_alert = "";
+$key = "azerty";
 
 if (isset($_POST["username"])){
 $url = 'http://35.204.123.64:3000/oauth2/token';
@@ -28,9 +29,10 @@ if ($result === FALSE) { /* Handle error */ }
 
 $obj = json_decode($result, true);
 if (isset ($obj["access_token"])){   
-    // $iv = iv();
-    // $key = "azerty";
+    $iv = iv();
+
     $_SESSION["username"]= $_POST["username"]; 
+    $_SESSION["iv"]= $iv;
     $_SESSION["password"]= encrypt($iv,$password,$key);
     header('location: http://127.0.0.1/Keyrock/session.php');
 
@@ -71,13 +73,13 @@ if (isset ($obj["access_token"])){
                 <div> <?= $text_alert?> </div>
         <div class="uk-inline">
                 <span class="uk-form-icon" uk-icon="icon: user"></span>
-                <input class="uk-input uk-text-right <?= $alert_class ?>" name="username" type="text" placeholder="Identifiant">
+                <input class="uk-input <?= $alert_class ?>" name="username" type="text" placeholder="Identifiant">
         </div>
     </div>
 
     <div class="uk-margin">
         <div class="uk-inline">
-                <span class="uk-form-icon uk-form-icon-flip" uk-icon="icon: lock"></span>
+                <span class="uk-form-icon" uk-icon="icon: lock"></span>
                 <input class="uk-input <?= $alert2_class ?>" type="password" grant_type="password" name="password" placeholder="Mot de passe">
         </div>
     </div>
