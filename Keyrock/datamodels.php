@@ -72,8 +72,7 @@ if(isset($_POST["type"])){
             <th>Comment</th>
             <th>Label</th>
             <th>Domain Includes</th>
-            <th>Range Includes</th>
-            
+            <th>Range Includes</th>           
         </tr>
     </thead>
 
@@ -146,9 +145,11 @@ foreach ($obj["@graph"] as $idx=>$ligne)
                     }
              }
         }
-    }
-} ?>
+    }?>   
 <input type="hidden" name="url" value="<?=$url?>">
+<?php 
+} ?>
+
 </form>
 </tbody>
 </table>   
