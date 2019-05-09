@@ -51,9 +51,6 @@ if ($result === FALSE) { /* Handle error */ }
             <input class="uk-input" id="form-horizontal-text" type="text" name="type" placeholder="">
         </div>
     </div>
-    <!-- <p uk-margin>
-                <button type="submit" class="uk-button uk-button-secondary uk-button-large" id="submit">Envoyer</button>
-    </p> -->
     </form>
 </div> 
 <?php
@@ -63,9 +60,9 @@ if(isset($_POST["type"])){
     <thead>
     <tr>
     <th colspan="7" class="uk-text-center">
-            <h3>
+            <h2>
                 <?=$_POST["type"]?>
-            </h3>
+            </h2>
         </th>
     </tr>
         <tr>
