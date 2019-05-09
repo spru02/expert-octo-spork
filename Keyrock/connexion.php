@@ -28,6 +28,7 @@ if ($result === FALSE) { /* Handle error */ }
 // var_dump(json_decode($result, true));
 
 $obj = json_decode($result, true);
+
 if (isset ($obj["access_token"])){   
     $iv = iv();
 
