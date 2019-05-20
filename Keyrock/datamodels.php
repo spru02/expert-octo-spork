@@ -108,7 +108,7 @@ if(isset($_POST["type"])){
 <hr>
 <?php
     foreach ($finish_data as $ligne)
-            {?>
+            { ?>
 
     <tr>
         <td>
@@ -127,13 +127,14 @@ if(isset($_POST["type"])){
                 <tr>
                 <td>
     <?php if(is_array($ligne["rdfs:label"])){
-                foreach ($ligne["rdfs:label"] as $data) {                         
+            foreach ($ligne["rdfs:label"] as $data) {            
                     echo $data; ?>
 <br>    
     <?php   }
-            }else{
-                    $ligne["rdfs:label"];
-            } ?>
+            }else{    
+                echo $ligne["rdfs:label"];
+            }
+        ?>
             </td>
             </tr>  
         </table>
