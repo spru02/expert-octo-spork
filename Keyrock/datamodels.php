@@ -2,9 +2,7 @@
 session_start();
 $valeur = 'schema:';
 if(isset($_POST["type"])){
-
 $url ='https://schema.org/'.$_POST["type"].'.jsonld';
-
 $options = array(
     'http' => array(
     'header'  => "Content-type: application/x-www-form-urlencoded",       
@@ -13,8 +11,37 @@ $options = array(
 $context  = stream_context_create($options);
 $result = file_get_contents($url, false, $context);
 if ($result === FALSE) { /* Handle error */ }
-}
 
+$obj = json_decode($result, true);
+$valeur = $valeur.$_POST["type"];
+$idx = "";
+$finish_data = array();
+foreach ($obj["@graph"] as $idx=>$ligne) 
+{ 
+    if(array_key_exists("schema:domainIncludes", $ligne))
+    {
+    
+        if( $ligne["schema:domainIncludes"] == $valeur){
+            $finish_data[$idx."g"] = $ligne;
+        }else{
+        foreach ($ligne["schema:domainIncludes"] as $ligne2)
+            {
+                
+                if(is_array($ligne2))
+                {
+                    if(in_array($valeur, $ligne2))
+                    { 
+                        $finish_data[$idx."c"] = $ligne;
+                    }
+                }
+                }if($ligne2 == $valeur){
+
+                    $finish_data[$idx."a"] = $ligne;
+                }
+            }
+        }
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -76,38 +103,44 @@ if(isset($_POST["type"])){
         </tr>
     </thead>
 
-<tbody>
-<form action="" method="post">
+    <tbody>
+    <form action="" method="post">
 <hr>
-<?php   
+<?php
+    foreach ($finish_data as $ligne)
+            {?>
 
-$obj = json_decode($result, true);
-$valeur = $valeur.$_POST["type"];
-$idx = "";
-foreach ($obj["@graph"] as $idx=>$ligne) 
-{ 
-    if(array_key_exists("schema:domainIncludes", $ligne))
-    {
-        foreach ($ligne["schema:domainIncludes"] as $ligne2)
-            {
-                if(is_array($ligne2))
-                {
-                    
-                    if((in_array($valeur, $ligne2)) || ($ligne2 == $valeur))
-                    { ?>
-
-        <tr>
-            <td>
+    <tr>
+        <td>
             <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid">
                 <label><input class="uk-checkbox" type="checkbox" value="<?= $idx ?>" name="<?= $idx ?>"></label>
             </div>
+        </td>
+        <td><?= $ligne["@id"] ?></td>
+        <td><?= $ligne["@type"] ?></td>
+        <td><?= $ligne["rdfs:comment"] ?></td>
+        <td>
+        <table>
+                    <tr>
+                        <th>Language & Value</th>
+                    </tr> 
+                <tr>
+                <td>
+    <?php if(is_array($ligne["rdfs:label"])){
+                foreach ($ligne["rdfs:label"] as $data) {                         
+                    echo $data; ?>
+<br>    
+    <?php   }
+            }else{
+                    $ligne["rdfs:label"];
+            } ?>
             </td>
-            <td><?= $ligne["@id"] ?></td>
-            <td><?= $ligne["@type"] ?></td>
-            <td><?= $ligne["rdfs:comment"] ?></td>
-            <td><?= $ligne["rdfs:label"] ?></td>
+            </tr>  
+        </table>
+        </td>
+
             <td>
-                <table>  
+                <table>
                         <tr>
                             <th>ID</th>
                         </tr> 
@@ -115,43 +148,41 @@ foreach ($obj["@graph"] as $idx=>$ligne)
     <?php foreach ($ligne["schema:domainIncludes"] as $donnee)
     { ?> 
                     <tr>
-                        <td><?= $donnee["@id"] ?></td>
+                        <td><?php if( count($ligne["schema:domainIncludes"]) == 1 ){
+                            echo $donnee;
+                        }else{
+                            echo $donnee["@id"];
+                         } ?></td>
                     </tr>
-    
-    <?php } ?>  
+
+    <?php } ?>
                 </table>
         </td><td>
-                <table>  
+                <table>
                         <tr>
                             <th>ID</th>
                         </tr> 
 
-    <?php foreach ($ligne["schema:rangeIncludes"] as $data)
-    { ?> 
-                    <tr>
-                        <td><?php if( count($ligne["schema:rangeIncludes"]) == 1 ){
-                            echo $data;
-                        }else{
-                            echo $data["@id"];
-                         } ?></td>
-                    </tr>
-    
-    <?php } ?>  
+                    <?php foreach ($ligne["schema:rangeIncludes"] as $data2)
+                    { ?> 
+                        <tr>
+                            <td><?php if( count($ligne["schema:rangeIncludes"]) == 1 ){
+                                echo $data2;
+                            }else{
+                                echo $data2["@id"];
+                            } ?></td>
+                        </tr>
+
+                    <?php }?>
                 </table>
-        
-        </td>
+            </td>
         </tr>
-                    <?php  break;  }
-                    }
-             }
-        }
-    }?>   
-<input type="hidden" name="url" value="<?=$url?>">
-<?php 
-} ?>
+    <?php }?>
+<input type="hidden" name="url" value="<?= $url ?>">
 
 </form>
-</tbody>
-</table>   
+</tbody> 
+<?php } ?>
+</table> 
 </body>
 </html>
