@@ -22,7 +22,7 @@ foreach ($obj["@graph"] as $idx=>$ligne)
     {
     
         if( $ligne["schema:domainIncludes"] == $valeur){
-            $finish_data[$idx."g"] = $ligne;
+            $finish_data[$idx] = $ligne;
         }else{
         foreach ($ligne["schema:domainIncludes"] as $ligne2)
             {
@@ -31,12 +31,12 @@ foreach ($obj["@graph"] as $idx=>$ligne)
                 {
                     if(in_array($valeur, $ligne2))
                     { 
-                        $finish_data[$idx."c"] = $ligne;
+                        $finish_data[$idx] = $ligne;
                     }
                 }
                 }if($ligne2 == $valeur){
 
-                    $finish_data[$idx."a"] = $ligne;
+                    $finish_data[$idx] = $ligne;
                 }
             }
         }
@@ -83,12 +83,13 @@ foreach ($obj["@graph"] as $idx=>$ligne)
 <?php
 if(isset($_POST["type"])){ 
 ?>
+<form action="checkdata.php" method="post">
 <table class="uk-table uk-table-hover uk-table-divider">
     <thead>
     <tr>
     <th colspan="7" class="uk-text-center">
             <h2>
-                <?=$_POST["type"]?>
+                <?= $_POST["type"] ?>
             </h2>
         </th>
     </tr>
@@ -102,14 +103,11 @@ if(isset($_POST["type"])){
             <th>Range Includes</th>           
         </tr>
     </thead>
-
     <tbody>
-    <form action="" method="post">
 <hr>
 <?php
-    foreach ($finish_data as $ligne)
+    foreach ($finish_data as $idx => $ligne)
             { ?>
-
     <tr>
         <td>
             <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid">
@@ -139,13 +137,11 @@ if(isset($_POST["type"])){
             </tr>  
         </table>
         </td>
-
             <td>
                 <table>
                         <tr>
                             <th>ID</th>
                         </tr> 
-
     <?php foreach ($ligne["schema:domainIncludes"] as $donnee)
     { ?> 
                     <tr>
@@ -155,7 +151,6 @@ if(isset($_POST["type"])){
                             echo $donnee["@id"];
                          } ?></td>
                     </tr>
-
     <?php } ?>
                 </table>
         </td><td>
@@ -163,7 +158,6 @@ if(isset($_POST["type"])){
                         <tr>
                             <th>ID</th>
                         </tr> 
-
                     <?php foreach ($ligne["schema:rangeIncludes"] as $data2)
                     { ?> 
                         <tr>
@@ -180,10 +174,10 @@ if(isset($_POST["type"])){
         </tr>
     <?php }?>
 <input type="hidden" name="url" value="<?= $url ?>">
-
-</form>
+<button type="submit" class="uk-button uk-button-secondary uk-button-medium uk-align-center" id="submit">Envoyer</button>
 </tbody> 
 <?php } ?>
 </table> 
+</form>
 </body>
 </html>
