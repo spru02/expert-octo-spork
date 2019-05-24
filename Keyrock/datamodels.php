@@ -35,7 +35,6 @@ foreach ($obj["@graph"] as $idx=>$ligne)
                     }
                 }
                 }if($ligne2 == $valeur){
-
                     $finish_data[$idx] = $ligne;
                 }
             }
@@ -75,7 +74,7 @@ foreach ($obj["@graph"] as $idx=>$ligne)
     <div class="uk-margin">
         <label class="uk-form-label" for="form-horizontal-text">Type</label>
         <div class="uk-form-controls">
-            <input class="uk-input" id="form-horizontal-text" type="text" name="type" placeholder="">
+            <input class="uk-input" id="form-horizontal-text" type="text" name="type" placeholder="Entrez votre Type puis Entrée">
         </div>
     </div>
     </form>
@@ -149,7 +148,8 @@ if(isset($_POST["type"])){
                             echo $donnee;
                         }else{
                             echo $donnee["@id"];
-                         } ?></td>
+                         } ?>
+                        </td>
                     </tr>
     <?php } ?>
                 </table>
@@ -165,7 +165,8 @@ if(isset($_POST["type"])){
                                 echo $data2;
                             }else{
                                 echo $data2["@id"];
-                            } ?></td>
+                            } ?>
+                            </td>
                         </tr>
 
                     <?php }?>
@@ -173,11 +174,11 @@ if(isset($_POST["type"])){
             </td>
         </tr>
     <?php }?>
-<input type="hidden" name="url" value="<?= $url ?>">
-<button type="submit" class="uk-button uk-button-secondary uk-button-medium uk-align-center" id="submit">Envoyer</button>
 </tbody> 
-<?php } ?>
 </table> 
+<input type="hidden" name="type" value="<?= $_POST["type"] ?>">
+<tr><td><button type="submit" class="uk-button uk-button-secondary uk-button-medium uk-align-center" id="submit">Envoyer la/les ligne(s) sélectionnée(s)</button></td></tr>
+<?php }?>
 </form>
 </body>
 </html>
