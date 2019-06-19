@@ -1,5 +1,7 @@
 <?php
 session_start();
+$result2= $obj2= $valeuroption= $valeurreference= $_POST["type"]="";
+
 
 $url2 ='http://127.0.0.1/Keyrock/type.json';
 $result2 = file_get_contents($url2);
@@ -28,7 +30,6 @@ $obj2 = json_decode($result2, true);
     <div class="uk-margin">
         <h2 class="uk-heading-line uk-heading-bullet"><span> DataModels/Sélectionner </span></h2>
     </div>
-    <?php if(!isset($_POST["type"])) { ?>
     <form action="tableau.php" method="post">
     <div class="uk-margin">
         <label class="uk-form-label" for="form-horizontal-select">Référence</label>
@@ -61,7 +62,9 @@ $obj2 = json_decode($result2, true);
     </div>
     <button type="submit" class="uk-button uk-button-secondary uk-button-medium uk-align-center" id="submit">Envoyer</button>
     </form>
-<?php } ?>  
 </div> 
 </body>
 </html>
+<?php
+$result2= $obj2= $valeuroption= $valeurreference="";
+?>

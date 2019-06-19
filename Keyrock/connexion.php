@@ -24,9 +24,6 @@ $context  = stream_context_create($options);
 $result = file_get_contents($url, true, $context);
 if ($result === FALSE) { /* Handle error */ }
 
-// var_dump($result);
-// var_dump(json_decode($result, true));
-
 $obj = json_decode($result, true);
 
 if (isset ($obj["access_token"])){   
@@ -41,7 +38,6 @@ if (isset ($obj["access_token"])){
     $alert_class= "uk-form-danger";
     $alert2_class= "uk-form-danger";
     $text_alert = "<h2> Email et/ou mot de passe inconnu* </h2>";
-    // echo "La réponse ne contient pas access_token !";
 };
 }else{
     echo "*Remplissez les champs Identifiant et Mot de passe";

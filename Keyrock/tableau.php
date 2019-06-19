@@ -1,6 +1,6 @@
 <?php
 session_start();
-
+$result2= $obj2= $valeuroption= $valeurreference= $finish_data= $context= $result="";
 $valeur = 'schema:';
 if(isset($_POST["type"])){
 $url ='https://schema.org/'.$_POST["type"].'.jsonld';
@@ -91,7 +91,6 @@ if(isset($_POST["type"])){
     <tbody>
 <hr>
 <?php
-var_dump($attributes); 
     foreach ($finish_data as $idx => $ligne){ ?>
     
     <tr>
@@ -183,3 +182,6 @@ var_dump($attributes);
 </form>
 <a href="http://127.0.0.1/Keyrock/datamodels.php"><button class="uk-button uk-button-secondary uk-button-medium uk-align-center" id="submit">Revenir</button></a>
 </html>
+<?php
+    $result2= $obj2= $valeuroption= $valeurreference= $finish_data= $context= $result="";
+?>
